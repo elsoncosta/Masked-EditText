@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+        >
+    <EditText
+        android:id="@+id/editTextCEP"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/cep"
+        />
+    <EditText
+        android:id="@+id/editTextPhone"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/phone"
+        />
+    <EditText
+        android:id="@+id/editTextCNPJ"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:hint="@string/cnpj"
+        />
+    <EditText
+        android:id="@+id/editTextCPF"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:hint="@string/cpf"
+        />
+    <EditText
+        android:id="@+id/editTextRG"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/rg"
+        />
+    <EditText
+        android:id="@+id/editTextOther"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/other"
+        />
+</LinearLayout>
+
