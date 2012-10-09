@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Example</string>
-    <string name="cep">CEP</string>
-    <string name="phone">Fone</string>
-    <string name="cnpj">CNPJ</string>
-    <string name="cpf">CPF</string>
-    <string name="rg">RG</string>
-    <string name="other">Outro</string>
+    <string name="cep">CEP ( #####-### )</string>
+    <string name="phone">Fone ( (##) ####-#### )</string>
+    <string name="cnpj">CNPJ ( ##.###.###/####-## )</string>
+    <string name="cpf">CPF ( ###.###.###-## )</string>
+    <string name="rg">RG ( ########## )</string>
+    <string name="other">Outro ( [##] )</string>
+    <string name="other1">Outro ( ## ##-## (#) [###-###] )</string>
 </resources>

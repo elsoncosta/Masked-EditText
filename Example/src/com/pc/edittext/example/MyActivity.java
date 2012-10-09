@@ -34,8 +34,8 @@ public class MyActivity extends Activity {
 
         new MaskedWatcher("##########", editTextRG).setAcceptOnlyNumbers(true);
 
-        new MaskedWatcher("## ## -- ## () [##]", editTextOther);
+        new MaskedWatcher("[##]", editTextOther);
 
-
+        new MaskedWatcher("## ##-## (#) [###-###]", (EditText) findViewById(R.id.editTextOther1));
     }
 }

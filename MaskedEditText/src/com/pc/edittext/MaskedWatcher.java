@@ -21,7 +21,7 @@ public class MaskedWatcher implements TextWatcher {
         mMask = mask;
         mEditText = editText;
         mIsUpdating = false;
-        mEditText.addTextChangedListener(this);
+        editText.addTextChangedListener(this);
     }
 
     public boolean acceptOnlyNumbers() {
@@ -48,6 +48,10 @@ public class MaskedWatcher implements TextWatcher {
         int end = count + start;
         String inserted = string.substring(start, end);
 
+        if (inserted.equalsIgnoreCase("")) return;
+
+        int maxLength = mMask.length();
+
         if (mAcceptOnlyNumbers && !inserted.matches("[0-9]*") && !string.equalsIgnoreCase("")) {
             mIsUpdating = true;
             editable.delete(start, end);
@@ -59,25 +63,54 @@ public class MaskedWatcher implements TextWatcher {
             return;
         }
 
-        int currentLength = s.length(), maxLength = mMask.length();
-        if (currentLength > maxLength) {
+        if (s.length() > maxLength) {
             mIsUpdating = true;
-            editable.delete(maxLength, currentLength);
+            editable.delete(maxLength, s.length());
+            //TODO
+            // I need a solution to not set text "again". Changes keyboard and selection
+            mIsUpdating = true;
+            mEditText.setText(mEditText.getText());
+            mEditText.setSelection(start);
+//            return;
+        }
+
+        while (editable.length() > maxLength) {
+            mIsUpdating = true;
+            editable.delete(maxLength, editable.length());
             //TODO
             // I need a solution to not set text "again". Changes keyboard and selection
             mIsUpdating = true;
             mEditText.setText(mEditText.getText());
             mEditText.setSelection(maxLength);
-            return;
         }
 
-        for (int i = start; i < editable.length(); i++) {
+        int length = Math.min(maxLength, editable.length());
+
+        for (int i = 0; i < length; i++) {
             char c = mMask.charAt(i);
             char editableC = editable.charAt(i);
             if (c != '#' && c != editableC) {
                 mIsUpdating = true;
                 editable.insert(i, String.valueOf(c));
             }
+        }
+
+        if (editable.length() == maxLength - 1) {
+            char  c = mMask.charAt(maxLength - 1);
+            if (c != '#') {
+                mIsUpdating = true;
+                editable.insert(maxLength - 1, String.valueOf(c));
+            }
+        }
+
+        while (editable.length() > maxLength) {
+            mIsUpdating = true;
+            editable.delete(maxLength, editable.length());
+            //TODO
+            // I need a solution to not set text "again". Changes keyboard and selection
+            mIsUpdating = true;
+            mEditText.setText(mEditText.getText());
+            mEditText.setSelection(maxLength);
         }
     }
 
