@@ -1,7 +1,7 @@
 package com.pc.edittext;
 
 import android.text.Editable;
-import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
@@ -10,8 +10,9 @@ import android.widget.EditText;
  */
 public class MaskedWatcher implements TextWatcher {
     private String mMask;
-    private boolean mIsUpdating, mAcceptOnlyNumbers;
     private EditText mEditText;
+    private char mCharRepresentation;
+    private boolean mIsUpdating, mAcceptOnlyNumbers;
 
     public MaskedWatcher(String mask, EditText editText) {
         if (mask == null)
@@ -22,6 +23,7 @@ public class MaskedWatcher implements TextWatcher {
         mEditText = editText;
         mIsUpdating = false;
         editText.addTextChangedListener(this);
+        mCharRepresentation = '#';
     }
 
     public boolean acceptOnlyNumbers() {
@@ -32,89 +34,62 @@ public class MaskedWatcher implements TextWatcher {
         mAcceptOnlyNumbers = acceptOnlyNumbers;
     }
 
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    public char getCharRepresentation() {
+        return mCharRepresentation;
+    }
+
+    public void setCharRepresentation(char charRepresentation) {
+        mCharRepresentation = charRepresentation;
     }
 
     @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
+    public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
         if (mIsUpdating) {
             mIsUpdating = false;
             return;
         }
 
-        Editable editable = mEditText.getText();
-        String string = s.toString();
-        int end = count + start;
-        String inserted = string.substring(start, end);
+        CharSequence insertedSequence = charSequence.subSequence(start, count + start);
 
-        if (inserted.equalsIgnoreCase("")) return;
-
-        int maxLength = mMask.length();
-
-        if (mAcceptOnlyNumbers && !inserted.matches("[0-9]*") && !string.equalsIgnoreCase("")) {
-            mIsUpdating = true;
-            editable.delete(start, end);
-            //TODO
-            // I need a solution to not set text "again". Changes keyboard and selection
-            mIsUpdating = true;
-            mEditText.setText(mEditText.getText());
-            mEditText.setSelection(end - 1);
+        if (mAcceptOnlyNumbers && !isNumeric(insertedSequence)) {
+            delete(start, start + count);
             return;
         }
 
-        if (s.length() > maxLength) {
-            mIsUpdating = true;
-            editable.delete(maxLength, s.length());
-            //TODO
-            // I need a solution to not set text "again". Changes keyboard and selection
-            mIsUpdating = true;
-            mEditText.setText(mEditText.getText());
-            mEditText.setSelection(start);
-//            return;
+        if (charSequence.length() > mMask.length()) {
+            delete(start, start + count);
+            return;
         }
 
-        while (editable.length() > maxLength) {
-            mIsUpdating = true;
-            editable.delete(maxLength, editable.length());
-            //TODO
-            // I need a solution to not set text "again". Changes keyboard and selection
-            mIsUpdating = true;
-            mEditText.setText(mEditText.getText());
-            mEditText.setSelection(maxLength);
-        }
-
-        int length = Math.min(maxLength, editable.length());
+        int length = mEditText.length();
 
         for (int i = 0; i < length; i++) {
-            char c = mMask.charAt(i);
-            char editableC = editable.charAt(i);
-            if (c != '#' && c != editableC) {
+            char m = mMask.charAt(i);
+            char e = mEditText.getText().charAt(i);
+            if (m != mCharRepresentation && m != e) {
                 mIsUpdating = true;
-                editable.insert(i, String.valueOf(c));
+                mEditText.getEditableText().insert(i, String.valueOf(m));
             }
-        }
-
-        if (editable.length() == maxLength - 1) {
-            char  c = mMask.charAt(maxLength - 1);
-            if (c != '#') {
-                mIsUpdating = true;
-                editable.insert(maxLength - 1, String.valueOf(c));
-            }
-        }
-
-        while (editable.length() > maxLength) {
-            mIsUpdating = true;
-            editable.delete(maxLength, editable.length());
-            //TODO
-            // I need a solution to not set text "again". Changes keyboard and selection
-            mIsUpdating = true;
-            mEditText.setText(mEditText.getText());
-            mEditText.setSelection(maxLength);
         }
     }
 
     @Override
-    public void afterTextChanged(Editable s) {
+    public void afterTextChanged(Editable editable) {
+    }
+
+    private void delete(int start, int end) {
+        mIsUpdating = true;
+        StringBuffer stringBuffer = new StringBuffer(mEditText.getEditableText().toString());
+        stringBuffer = stringBuffer.delete(start, end);
+        mEditText.setText(stringBuffer.toString());
+        mEditText.setSelection(mEditText.length());
+    }
+
+    private boolean isNumeric(CharSequence charSequence) {
+        return TextUtils.isEmpty(charSequence) || TextUtils.isDigitsOnly(charSequence);
     }
 }

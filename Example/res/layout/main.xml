@@ -2,56 +2,47 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-        >
+              android:layout_height="fill_parent">
     <EditText
         android:id="@+id/editTextCEP"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/cep"
-        android:nextFocusDown="@+id/editTextPhone"
         />
     <EditText
         android:id="@+id/editTextPhone"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/phone"
-        android:nextFocusDown="@+id/editTextCNPJ"
         />
     <EditText
         android:id="@+id/editTextCNPJ"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:hint="@string/cnpj"
-        android:nextFocusDown="@+id/editTextCPF"
         />
     <EditText
         android:id="@+id/editTextCPF"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:hint="@string/cpf"
-        android:nextFocusDown="@+id/editTextRG"
         />
     <EditText
         android:id="@+id/editTextRG"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/rg"
-        android:nextFocusDown="@+id/editTextOther"
         />
     <EditText
         android:id="@+id/editTextOther"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/other"
-        android:nextFocusUp="@+id/editTextOther1"
         />
     <EditText
         android:id="@+id/editTextOther1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/other1"
-        android:nextFocusUp="@+id/editTextCEP"
         />
 </LinearLayout>
-

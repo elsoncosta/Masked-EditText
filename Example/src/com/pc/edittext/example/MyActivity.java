@@ -24,8 +24,9 @@ public class MyActivity extends Activity {
         MaskedWatcher cepWatcher = new MaskedWatcher("#####-###", editTextCEP);
         cepWatcher.setAcceptOnlyNumbers(true);
 
-        MaskedWatcher phoneWatcher = new MaskedWatcher("(##) ####-####", editTextPhone);
+        MaskedWatcher phoneWatcher = new MaskedWatcher("(**) ****-****", editTextPhone);
         phoneWatcher.setAcceptOnlyNumbers(true);
+        phoneWatcher.setCharRepresentation('*');
 
         MaskedWatcher cnpjWatcher = new MaskedWatcher("##.###.###/####-##", editTextCNPJ);
         cnpjWatcher.setAcceptOnlyNumbers(true);
